@@ -1,0 +1,79 @@
+<div class="caixa">
+    <div class="hello">
+        <h3 class="ola">Olá, {{nome}}! Mantenha-se atualizado(a). <i class='bx bxs-cat'></i></h3>
+    </div>
+    <div class="caixote">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col aumentar">
+                    <h3 class="title">Pacotinhos adotados</h3>
+                    <div class="number">
+                        {{adotados}}
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="title">Doações </h3>
+                    <div class="number">
+                        R${{doacoes}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h3 class="title">Pacotinhos aguardando adoção </h3>
+                    <div class="number">
+                        {{adocao}}
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="title">Adotantes cadastrados</h3>
+                    <div class="number">
+                        {{adotantes}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .caixa {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 88vh;
+        width: 100vw;
+    }
+
+    .caixote {
+        align-items: center;
+        display: flex;
+        justify-content: space-evenly;
+        height: 90%;
+        width: 65%;
+    }
+
+    .col {
+        background-image: url("/assets/img/Group 2.png");
+        background-repeat: no-repeat;
+        //background-color: #c6d982;
+        margin: 0 1rem 1rem 0;
+        object-fit: cover;
+        padding: 1rem;
+        width: 80%;
+    }
+
+    .hello {
+        align-items: center;
+        display: flex;
+        height: 15%;
+        padding-left: 2rem;
+        width: 100%;
+    }
+
+    .number {
+        font-size: 50px;
+    }
+</style>

@@ -1,0 +1,116 @@
+<div class="caixa">
+    <div class="detalhe">
+        <img src="/assets/img/logog.svg" class="logo" alt="">
+        <p class="texto">{{titulo}}</p>
+        {{#if alerta}}
+        <p class="alerta">{{{alerta}}}</p>
+        {{/if}}
+        <form action="/login" method="post">
+            <div class="inputs">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
+                        name="email" value="{{email}}" required autocomplete="off">
+                    <label for="floatingInput">e-mail</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                        name="senha" value="{{senha}}" required autocomplete="off">
+                    <label for="floatingPassword">senha</label>
+                </div>
+            </div>
+            <div class="conectado">
+                <div class="form-check form-switch">
+                <label class="form-check-label" for="flexSwitchCheckChecked">Mantenha-me conectado</label>
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" value="1" name="keep_logged" checked>
+            </div>
+            </div>
+            <div class="btns">
+                <button type="submit" class="btnn">Acessar minha conta</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .alerta {
+        background-color: rgb(207, 46, 46);
+        border-radius: 6px;
+        padding: 5px;
+    }
+
+    .btnn {
+        background-color: #bf814b;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+    }
+
+    .btnn:hover {
+        background-color: #c6d982;
+    }
+
+    .btns {
+        align-items: center;
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 1rem;
+    }
+
+    .caixa {
+        align-items: center;
+        display: flex;
+        justify-content: space-evenly;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .conectado{
+        align-items: center;
+        color: #fefefe;
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 1rem;
+    }
+
+    .detalhe {
+        align-items: center;
+        background-color: #3e5902;
+        border-radius: 6px;
+        box-shadow: 10px 10px 5px 0px rgba(191, 185, 191, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        width: 30%;
+        height: 70%;
+    }
+
+    .form-control {
+        background-color: #c6d982;
+        border: none;
+        width: 100%;
+    }
+
+    .form-control:focus {
+        background-color: #c6d982;
+    }
+
+    header,
+    footer {
+        display: none;
+    }
+
+    .logo {
+        height: 30%;
+        object-fit: cover;
+    }
+
+    .texto {
+        color: #fefefe;
+    }
+
+    @media screen and (max-width: 1023px) {
+        .detalhe {
+            width: 90%;
+        }
+    }
+</style>

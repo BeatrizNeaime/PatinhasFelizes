@@ -19,16 +19,20 @@
                                 <li>Idade: {{idade}}</li>
                                 <li>Raça: {{raca}}</li>
                                 {{#if adotado}}
-                                <li class="adotado">Adotado</li>
+                                <div class="adopted">
+                                    <li class="adotado">Adotado</li>
+                                </div>
                                 {{else}}
-                                <li class="adocao">Aguardando</li>
+                                <div class="waiting">
+                                    <li class="adocao">Aguardando</li>
+                                </div>
                                 {{/if}}
                             </ul>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Adoção</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Baixa</button>
                                 </div>
                             </div>
                         </div>
@@ -42,6 +46,10 @@
 </div>
 
 <style>
+
+    .adopted{
+        background-color: ;
+    }
     .caixa {
         align-items: center;
         display: flex;
@@ -60,7 +68,26 @@
     }
 
     img{
-        object-fit: fit;
+        height: auto;
+        max-height: 194.85px;
+        max-width: 371.33px;
+        width: auto;
+    }
+
+    li{
+        list-style: none;
+    }
+
+    li::before{
+        content: "\1F43E ";
+    }
+
+    .nome{
+        font-size: 20px;
+    }
+
+    .nome::before{
+        content: "";
     }
 
     .titulo {

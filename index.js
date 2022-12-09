@@ -161,9 +161,7 @@ app.get('/logout', function (req, res) {
 })
 
 app.get('/animais', async function (req,res){
-
-    const animais = await query("SELECT * FROM Animal")
-    console.log(animais)
+    const animais = await query("SELECT * FROM Animal ORDER BY adotado ASC")
     res.render('animais',{
         animais,
         foto: animais[0].foto,
@@ -172,6 +170,33 @@ app.get('/animais', async function (req,res){
         tipo: animais[0].tipo,
         raca: animais[0].raca,
         sexo: animais[0].Sexo
+    })
+})
+
+app.get('/funcionarios', async function(req,res){
+    const func = await query("SELECT * FROM Funcionario")
+    res.render('funcionarios',{
+        func
+    })
+}) 
+
+app.get("/excluir", async function(req, res){
+    const id = parseInt(req.query.id);
+    const f = await query("SELECT * FROM Funcionario WHERE CPF = ?", [id])
+    res.render('excluir',{f})
+});
+
+app.get('/deletar', async function(req,res){
+    const id = parseInt(req.query.id)
+    if(!isNaN(id) && id >0){
+        await query("DELETE FROM Funcionario WHERE CPF = ?", [id])
+    }
+    res.redirect('/funcionarios')
+})
+
+app.get('/add-func', async function(req,res){
+    res.render('add-func',{
+        titulo: "Adicionar novo funcionário"
     })
 })
 
@@ -280,6 +305,36 @@ app.post('/login', async function (req, res) {
         res.redirect("/")
         return
     }
+})
+
+app.post('/add-func', async function(req,res){
+    const {Nome, Salario, Setor, Tipo_Colab, email, foto} = req.body
+    const dados={
+        alerta:'',
+        Nome, 
+        Salario,
+        Setor,
+        Tipo_Colab,
+        email,
+        foto
+    }
+
+    try {
+        if(!Nome) throw new Error('Nome é um campo obrigatório!')
+        if(!Salario) throw new Error('Salário é um campo obrigatório!')
+        if(!Setor) throw new Error('Cargo é um campo obrigatório!')
+        if(!Tipo_Colab) throw new Error('Tipo de Colaborador é um campo obrigatório!')
+        if(!email) throw new Error('Contato é um campo obrigatório!')
+
+        const sql = 'INSERT INTO Funcionario(Nome, Salario, Setor, Tipo_Colab, email, foto) VALUES (?,?,?,?,?,?)'
+        const valores = [Nome, Salario, Setor, Tipo_Colab, email, foto]
+        await query(sql, valores)
+
+    } catch (e) {
+        dados.alerta = e.message
+    }
+    //res.render('add-func', dados)
+    res.redirect('/funcionarios')
 })
 
 /* --- LISTEN --- */

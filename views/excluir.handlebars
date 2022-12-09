@@ -1,0 +1,46 @@
+<div class="caixa">
+    <div class="titulo">
+        <h1>Tem certeza que deseja excluir?</h1>
+    </div>
+    <div class="caixote">
+        {{#if f}}
+        {{#each f}}
+        <div class="card" style="width: 18rem;">
+            <img src="{{{foto}}}" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">{{{Nome}}}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Tipo de Colaborador: {{{Tipo_Colab}}}</li>
+                <li class="list-group-item">Cargo: {{{Cargo}}}</li>
+                <li class="list-group-item">Matrícula: {{{CPF}}}</li>
+                <li class="list-group-item">Salário: {{{Salario}}}</li>
+                <li class="list-group-item">Contato: {{{email}}}</li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="card-link">Cancelar</a>
+                <a href="/deletar?id={{CPF}}" class="card-link">Excluir</a>
+            </div>
+        </div>
+        {{/each}}
+        {{/if}}
+    </div>
+</div>
+
+<style>
+    .caixa {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .card{
+        margin: 2rem 0;
+    }
+
+    .titulo{
+        height: 30%;
+        margin: 1.5rem 0;
+    }
+</style>

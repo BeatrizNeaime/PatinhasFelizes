@@ -124,14 +124,7 @@ app.get('/animais', async function (req, res) {
     const animais = await query("SELECT * FROM Animal ORDER BY adotado ASC")
     res.render('animais', {
         animais,
-        foto: animais[0].foto,
-        nome: animais[0].Nome,
-        idade: animais[0].idade,
-        tipo: animais[0].tipo,
-        raca: animais[0].raca,
-        sexo: animais[0].Sexo,
-        IDAnimal: animais[0].IDAnimal,
-        alerta: ""
+        alerta: ''
     })
 })
 
@@ -191,6 +184,64 @@ app.get('/add-ado', async function (req, res) {
     })
 })
 
+app.get('/excluir-ado', async function (req, res) {
+    const id = parseInt(req.query.id);
+    const f = await query("SELECT * FROM Adotante WHERE CPF = ?", [id])
+    res.render('excluir-ado', { f })
+})
+
+app.get('/deletar-adotante', async function (req, res) {
+    const id = parseInt(req.query.id)
+    if (!isNaN(id) && id > 0) {
+        await query("DELETE FROM Adotante WHERE CPF = ?", [id])
+    }
+    res.redirect('/adotantes')
+})
+
+app.get('/financas', async function (req, res) {
+    const d = await query("SELECT * FROM Doacao")
+    res.render('financas', {
+        d
+    })
+})
+
+app.get('/add-doacao', async function (req, res) {
+    const mail = [req.session.usuario.emailF]
+    const nome = await query("SELECT Nome FROM Funcionario WHERE email LIKE ?", mail)
+    res.render('add-doacao', {
+        nomeFunc: nome[0]
+    })
+})
+
+app.get('/excluir-doacao', async function (req, res) {
+    const id = parseInt(req.query.id)
+    const f = await query("SELECT * FROM Doacao where NDoacao=?", [id])
+
+    res.render('excluir-doacao', { f })
+})
+
+app.get('/deletar-doacao', async function (req, res) {
+    const id = parseInt(req.query.id)
+    console.log(id)
+    if (!isNaN(id) && id > 0) {
+        await query('DELETE from Recebe WHERE NDoacao=?', [id])
+        await query("DELETE FROM Doacao WHERE NDoacao = ?", [id])
+    }
+    res.redirect('/financas')
+})
+
+app.get('/adocao', async function(req,res){
+    const d = await query("SELECT * FROM Adocao")
+    const aguar = await query('SELECT * FROM Animal WHERE adotado=0')
+    const adotados = await query('SELECT * FROM Animal WHERE adotado=1')
+    res.render('adocao', {
+        d,
+        agua: aguar.length,
+        adotado: adotados.length
+    })
+})
+
+
 /* --- MÉTODOS POST ---*/
 
 app.post('/login', async function (req, res) {
@@ -247,7 +298,6 @@ app.post('/add-func', async function (req, res) {
         res.redirect('/funcionarios')
     } catch (e) {
         dados.alerta = e.message
-        console.log(dados)
         res.render('add-func', { dados, titulo: "Adicionar novo funcionário" })
     }
 })
@@ -289,7 +339,7 @@ app.post('/add-ado', async function (req, res) {
         Endereco,
         Historico
     }
-    console.log(dados)
+
     try {
         if (!Nome) throw new Error("Nome é obrigatório!")
         if (!Telefone) throw new Error("Telefone é obrigatório!")
@@ -302,8 +352,46 @@ app.post('/add-ado', async function (req, res) {
         res.redirect('/adotantes')
     } catch (e) {
         dados.alerta = e.message
-        console.log(dados.alerta)
         res.render('add-ado', { dados })
+    }
+})
+
+app.post('/add-doacao', async function (req, res) {
+    const mail = [req.session.usuario.emailF]
+    const func = await query("SELECT * FROM Funcionario WHERE email LIKE ?", mail)
+    const { Nome, Valor, Tipo, Dia } = req.body
+    dados = {
+        Nome,
+        Valor,
+        Tipo,
+        Dia,
+        alerta: ''
+    }
+    try {
+        if (!Valor) throw new Error("Valor é um campo obrigatório!")
+        if (!Tipo) throw new Error('Tipo de doação é um campo obrigatório')
+        if (!Valor) throw new Error('Valor/Quantidade é um campo obrigatório!')
+        if (!Dia) throw new Error('Por favor, selecione uma data!')
+
+        const doacao = 'INSERT INTO Doacao(Nome,Valor, Tipo, Dia, CPF) VALUES (?,?,?,?,?)'
+        const valores = [Nome, Valor, Tipo, Dia, func[0].CPF]
+        await query(doacao, valores)
+
+        const enviei = 'SELECT NDoacao FROM Doacao WHERE Nome LIKE ? and Valor LIKE ? and Tipo LIKE ? and Dia LIKE ?'
+        const aa = [Nome, Valor, Tipo, Dia]
+
+        const aqui = await query(enviei, aa)
+
+        const recebe = 'INSERT INTO Recebe(NDoacao, CPFFuncionario) VALUES (?,?)'
+        const sim = [aqui[0], func[0].CPF]
+        await query(recebe, sim)
+
+
+        res.redirect('financas')
+    } catch (e) {
+        dados.alerta = e.message
+        console.log(e.message)
+        res.render('add-doacao', { dados })
     }
 })
 

@@ -2,45 +2,55 @@
     <div class="titulo">
         <h1>Adicionar novo {{novo}}</h1>
     </div>
+    <div class="alert alert-primary" role="alert">
+        Dica: caso seja uma doação anônima, deixe o campo relativo ao nome em branco
+    </div>
     {{#if dados.alerta}}
     <div class="alert alert-danger" role="alert">
         {{{dados.alerta}}}
     </div>
     {{/if}}
     <div class="caixote">
-        <form action="/add-ado" method="post" class="formulario">
+        <form action="/add-doacao" method="post" class="formulario">
             <div class="linha">
-                <div class="input-group mb-3 linhap" >
+                <div class="input-group mb-3 ">
                     <span class="input-group-text" id="basic-addon1">Nome</span>
-                    <input type="text" class="form-control" placeholder="Totó" aria-label="Nome"
-                        aria-describedby="basic-addon1" name="Nome" value="{{{nome}}}">
+                    <input type="text" class="form-control linhap" placeholder="André" aria-label="Nome"
+                        aria-describedby="basic-addon1" name="Nome" value="{{{Nome}}}">
                 </div>
                 <div class="linhap">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Telefone</span>
-                        <input type="text" class="form-control" placeholder="xxxxxxxxxxx" aria-label="Nome"
-                            aria-describedby="basic-addon1" name="Telefone" value="{{{Telefone}}}" autocomplete="off">
+                        <span class="input-group-text" id="basic-addon1">Data</span>
+                        <input type="date" class="form-control" placeholder="xxxxxxxxxxx" aria-label="Nome"
+                            aria-describedby="basic-addon1" name="Dia" value="{{{Dia}}}">
                     </div>
                 </div>
             </div>
             <div class="linha">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Endereço:</span>
-                    <input type="text" class="form-control" placeholder="2 anos" aria-label="Tipo de Colaborador:"
-                        aria-describedby="basic-addon1" name="Endereco" value="{{{Endereco}}}" autocomplete="off">
-                </div>
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupSelect01">Já adotou?</label>
-                    <select class="form-select" id="inputGroupSelect01" name="Historico">
+                <div class="input-group mb-3 meio">
+                    <label class="input-group-text" for="inputGroupSelect01">Tipo</label>
+                    <select class="form-select" id="inputGroupSelect01" name="Tipo">
                         <option selected disabled>Selecione...</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
+                        <option value="0">Dinheiro</option>
+                        <option value="1">Ração</option>
                     </select>
                 </div>
+                <div class="input-group mb-3 meio">
+                    <span class="input-group-text" id="basic-addon1">Valor(R$)/Quantidade(Kg):</span>
+                    <input type="text" class="form-control" placeholder="2" aria-label="Tipo de Colaborador:"
+                        aria-describedby="basic-addon1" name="Valor"
+                        value="{{Valor}}" >
+                </div>
+                <div class="mb-3 row meio">
+                    <div class="recebeu">
+                        <label for="staticEmail" class="col-form-label ">Recebido por: {{nomeFunc}}</label>
+                    </div>
+                </div>
+
             </div>
             <div class="linha">
                 <div class="linha-f">
-                    <button class="btn-cancel"><a href="/adotantes">Voltar</a></button>
+                    <button class="btn-cancel"><a href="/financas">Voltar</a></button>
                     <button class="btn-go" type="submit">Adicionar</button>
                 </div>
             </div>
@@ -117,6 +127,18 @@
         width: 49.5%;
     }
 
+    .meio {
+        width: 33%;
+    }
+
+    .recebido {
+        background-color: rebeccapurple;
+    }
+
+    .recebeu {
+        width: 100%;
+    }
+
     .titulo {
         height: 30%;
         margin: 1.5rem 0;
@@ -124,18 +146,20 @@
 
     @media screen and (max-width: 1023px) {
 
-        .formulario, .linha {
+        .formulario,
+        .linha {
             align-items: center;
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
         }
 
-        .linha{
+        .linha {
             margin: 0;
         }
 
-        .linhap, .linha-f{
+        .linhap,
+        .linha-f {
             width: 100%;
         }
 

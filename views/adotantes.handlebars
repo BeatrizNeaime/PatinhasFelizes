@@ -6,14 +6,12 @@
         <button class="btn-add"><a href="/add-ado">Adicionar novo adotante</a></button>
     </div>
     <div class="content">
-
         <div class="galeria">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 middle">
                 {{#if func}}
                 {{#each func}}
                 <div class="col">
                     <div class="card shadow-sm">
-                        </svg>
                         <div class="card-body">
                             <p class="card-text">
                             <ul class="info">
@@ -38,13 +36,17 @@
                                     <button type="button" class="btn btn-sm btn-outline-secondary"><a href=""
                                             class="add">Adoção</a></button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary excluir"><a
-                                            href="/excluir-animal?id={{IDAnimal}}">Excluir</a></button>
+                                            href="/excluir-ado?id={{CPF}}">Excluir</a></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 {{/each}}
+                {{else}}
+                <div class="nada">
+                    <p>Ops! Parece que não temos adotantes!</p>
+                </div>
                 {{/if}}
             </div>
         </div>
@@ -102,7 +104,6 @@
         background-color: #a3bf3b;
     }
 
-
     .caixa {
         align-items: center;
         display: flex;
@@ -114,6 +115,7 @@
         align-items: center;
         display: flex;
         justify-content: space-evenly;
+        width: 90%;
     }
 
     .excluir {
@@ -138,7 +140,7 @@
         align-items: center;
         display: flex;
         justify-content: space-evenly;
-        width: 80%;
+        width: 90%;
     }
 
     img {
@@ -162,6 +164,10 @@
         justify-content: space-evenly;
     }
 
+    .nada{
+        width: 100%;
+    }
+
     .nome {
         font-size: 20px;
     }
@@ -180,4 +186,14 @@
         background-color: #ed1b2e;
         color: #fefefe;
     }
+
+    @media screen and (max-width: 1023px) {
+        .botao-add{
+            align-items: center;
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+        }
+    }
+
 </style>

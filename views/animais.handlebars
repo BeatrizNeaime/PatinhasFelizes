@@ -1,9 +1,9 @@
 <div class="caixa">
     <div class="titulo">
-        <h1 class="title">Animais</h1>
+        <h1 class="title">Pacotinhos</h1>
     </div>
     <div class="botao-add">
-        <button class="btn-add"><a href="/add-animal">Adicionar novo animal</a></button>
+        <button class="btn-add"><a href="/add-animal">Adicionar novo pacotinho</a></button>
     </div>
     <div class="content">
         {{#if alerta}}
@@ -23,7 +23,6 @@
                         <img width="100%" height="100%" fill="#55595c"
                             src="https://i.pinimg.com/736x/dc/c6/6a/dcc66a7ef2f74e81da4fdf3f1b52ab81.jpg"></img>
                         {{/if}}
-                        </svg>
                         <div class="card-body">
                             <p class="card-text">
                             <ul class="info">
@@ -62,6 +61,10 @@
                     </div>
                 </div>
                 {{/each}}
+                {{else}}
+                <div class="nada">
+                    <p>Ops! Parece que não temos pacotinhos!</p>
+                </div>
                 {{/if}}
             </div>
         </div>
@@ -119,7 +122,6 @@
         background-color: #a3bf3b;
     }
 
-
     .caixa {
         align-items: center;
         display: flex;
@@ -131,6 +133,7 @@
         align-items: center;
         display: flex;
         justify-content: space-evenly;
+        width: 90%;
     }
 
     .excluir {
@@ -179,6 +182,10 @@
         justify-content: space-evenly;
     }
 
+    .nada {
+        width: 100%;
+    }
+
     .nome {
         font-size: 20px;
     }
@@ -196,5 +203,14 @@
     .waiting {
         background-color: #ed1b2e;
         color: #fefefe;
+    }
+
+    @media screen and (max-width: 1023px) {
+        .botao-add {
+            align-items: center;
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+        }
     }
 </style>

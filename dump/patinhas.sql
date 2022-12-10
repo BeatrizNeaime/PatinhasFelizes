@@ -25,9 +25,11 @@ create table Doacao(
 	NDoacao int not null auto_increment, 
     Nome varchar(50), 
     Valor decimal, 
-    Tipo varchar(50), 
-    Dia date, 
-    primary key(NDoacao)
+    Tipo int, /*0-> dinheiro, 1-> ração*/ 
+    Dia varchar(10),
+    CPF int,
+    primary key(NDoacao),
+    foreign key(CPF) references Funcionario(CPF)
 );
 create table Recebe (
 	NDoacao int not null auto_increment, 
@@ -47,8 +49,12 @@ create table Adocao(
 	IDAdocao int not null auto_increment, 
     dia date, 
     CPFAdotante int, 
+    IDAnimal int,
+    CPFFunc int,
     primary key(IDAdocao), 
-    foreign key(CPFAdotante) references Adotante(CPF)
+    foreign key(CPFAdotante) references Adotante(CPF),
+    foreign key(IDAnimal) references Animal(IDAnimal),
+    foreign key(CPFFunc) references Funcionario(CPF)
 );
 create table Animal(
 	IDAnimal int not null auto_increment, 
@@ -69,5 +75,7 @@ create table MediaAdocao(
 );
 
 show tables;
-select * from Adotante;
-drop table Adotante;
+select * from loginFuncionarios;
+drop table Adocao;
+
+select Nome from Funcionario where CPF = 19;

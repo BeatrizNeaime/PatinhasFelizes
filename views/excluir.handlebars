@@ -6,20 +6,27 @@
         {{#if f}}
         {{#each f}}
         <div class="card" style="width: 18rem;">
-            <img src="{{{foto}}}" class="card-img-top">
-            <div class="card-body">
+            {{#if foto}}
+            <img width="100%" height="100%" fill="#55595c" src="{{foto}}"></img>
+            {{else}}
+            <img width="100%" height="100%" fill="#55595c" src="assets/img/logog.svg"></img>
+            {{/if}} <div class="card-body">
                 <h5 class="card-title">{{{Nome}}}</h5>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Tipo de Colaborador: {{{Tipo_Colab}}}</li>
                 <li class="list-group-item">Cargo: {{{Cargo}}}</li>
                 <li class="list-group-item">Matrícula: {{{CPF}}}</li>
+                {{#if Salario}}
                 <li class="list-group-item">Salário: {{{Salario}}}</li>
+                {{else}}
+                <li class="list-group-item">Salário: não se aplica</li>
+                {{/if}}
                 <li class="list-group-item">Contato: {{{email}}}</li>
             </ul>
             <div class="card-body">
-                <a href="#" class="card-link">Cancelar</a>
-                <a href="/deletar?id={{CPF}}" class="card-link">Excluir</a>
+                <a href="/funcionarios" class="card-link">Cancelar</a>
+                <a href="/deletar?id={{CPF}}" class="card-link excluir">Excluir</a>
             </div>
         </div>
         {{/each}}
@@ -35,11 +42,15 @@
         justify-content: space-evenly;
     }
 
-    .card{
+    .card {
         margin: 2rem 0;
     }
 
-    .titulo{
+    .card-link {
+        text-decoration: none;
+    }
+
+    .titulo {
         height: 30%;
         margin: 1.5rem 0;
     }

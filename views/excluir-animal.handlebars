@@ -1,0 +1,95 @@
+<div class="caixa">
+    <div class="titulo">
+        <h1>Tem certeza que deseja excluir?</h1>
+    </div>
+    <div class="caixote">
+        {{#if f}}
+        {{#each f}}
+        <div class="card" style="width: 18rem;">
+            {{#if foto}}
+            <img width="100%" height="100%" fill="#55595c" src="{{foto}}"></img>
+            {{else}}
+            <img width="100%" height="100%" fill="#55595c" src="assets/img/logog.svg"></img>
+            {{/if}} <div class="card-body">
+                <h5 class="card-title">{{{Nome}}}</h5>
+            </div>
+            <p class="invisivel">{{{IDAnimal}}}</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Espécie: {{{tipo}}}</li>
+                {{#if Sexo}}
+                <li class="list-group-item">Sexo: fêmea</li>
+                {{else}}
+                <li class="list-group-item">Sexo: macho</li>
+                {{/if}}
+                <li class="list-group-item">Raça: {{{raca}}}</li>
+                <li class="list-group-item">Idade: {{{idade}}}</li>
+                {{#if adotado}}
+                <div class="adopted">
+                    <li class="adotado">Adotado</li>
+                </div>
+                {{else}}
+                <div class="waiting">
+                    <li class="adocao">
+                        Aguardando
+                    </li>
+                </div>
+                {{/if}}
+            </ul>
+            <div class="card-body">
+                <a href="/funcionarios" class="card-link">Cancelar</a>
+                <a href="/deletar-animal?id={{IDAnimal}}" class="card-link excluir">Excluir</a>
+            </div>
+        </div>
+        {{/each}}
+        {{/if}}
+    </div>
+</div>
+
+<style>
+    .adopted {
+        background-color: #a3bf3b;
+        color: #fefefe;
+    }
+
+    .adopted,
+    .waiting {
+        border-radius: 6px;
+        list-style: none;
+        text-align: center;
+        width: 100%;
+    }
+
+    .adopted li::before,
+    .waiting li::before {
+        content: none !important;
+    }
+
+    .caixa {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .card {
+        margin: 2rem 0;
+    }
+
+    .card-link {
+        text-decoration: none;
+    }
+
+    .invisivel {
+        display: none;
+    }
+
+    .titulo {
+        height: 30%;
+        margin: 1.5rem 0;
+    }
+
+    .waiting {
+        background-color: #ed1b2e;
+        color: #fefefe;
+    }
+</style>

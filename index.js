@@ -6,6 +6,7 @@ const mysql = require('mysql2/promise');
 const PORT = process.env.PORT || 3000;
 const sessions = require("express-session");
 const cookieParser = require("cookie-parser");
+const { off } = require('process');
 const uuidv4 = require('uuid').v4;
 
 const app = express();
@@ -73,19 +74,16 @@ app.get("/", async function (req, res) {
         const r1 = await query(sqlAdopt, num0)
         const r2 = await query(sqlAdopt, num1)
 
-        const sqlDonation = "SELECT * FROM Doacao WHERE Tipo = ?"
-        const tipo = "Dinheiro"
+        const sqlDonation = "SELECT * FROM Funcionario WHERE Tipo_Colab = ?"
+        const tipo = "Voluntário"
         const rD = await query(sqlDonation, tipo)
-        var total = 0
-        for (let i = 0; i < rD.length; i++) {
-            total = total + parseFloat(rD[i].Valor)
-        }
+
         const adotantes = await query("SELECT * from Adotante")
         res.render('home', {
             nome: r[0].nome,
             adocao: r1.length,
             adotados: r2.length,
-            doacoes: total,
+            doacoes: rD.length,
             adotantes: adotantes.length
         })
     }
@@ -95,34 +93,6 @@ app.get('/login', function (req, res) {
     res.render('login', {
         titulo: "Faça login em sua conta"
     })
-})
-
-app.get('/sobre', function (req, res) {
-    res.render('sobre')
-})
-
-app.get('/contato', async function (req, res) {
-    const contatos = await query('SELECT * FROM contatos')
-
-    let nome = contatos[0].nome
-    let email = contatos[0].email
-    let mensagem = contatos[0].mensagem
-
-    res.render('contato', {
-        contatos: contatos,
-        nome: nome,
-        email: email,
-        mensagem: mensagem
-    })
-})
-
-app.get("/delete/produto/:id", async function (req, res) {
-    const id = parseInt(req.params.id)
-    if (!isNaN(id) && id > 0) {
-        await query("DELETE FROM lancamentos WHERE id=?", [id])
-    }
-
-    res.redirect("/")
 })
 
 app.get('/editar', async function (req, res) {
@@ -144,145 +114,84 @@ app.get('/editar', async function (req, res) {
     })
 })
 
-app.get('/adicionar', function (req, res) {
-    res.render('adicionar')
-})
-
-app.get('/cadastro', function (req, res) {
-    res.render('cadastro', {
-        titulo: "Cadastro"
-    })
-})
-
 app.get('/logout', function (req, res) {
     res.cookie('token', "")
     req.session.destroy()
     res.redirect('/login')
 })
 
-app.get('/animais', async function (req,res){
+app.get('/animais', async function (req, res) {
     const animais = await query("SELECT * FROM Animal ORDER BY adotado ASC")
-    res.render('animais',{
+    res.render('animais', {
         animais,
         foto: animais[0].foto,
         nome: animais[0].Nome,
         idade: animais[0].idade,
         tipo: animais[0].tipo,
         raca: animais[0].raca,
-        sexo: animais[0].Sexo
+        sexo: animais[0].Sexo,
+        IDAnimal: animais[0].IDAnimal,
+        alerta: ""
     })
 })
 
-app.get('/funcionarios', async function(req,res){
+app.get('/funcionarios', async function (req, res) {
     const func = await query("SELECT * FROM Funcionario")
-    res.render('funcionarios',{
+    res.render('funcionarios', {
         func
     })
-}) 
+})
 
-app.get("/excluir", async function(req, res){
+app.get("/excluir", async function (req, res) {
     const id = parseInt(req.query.id);
     const f = await query("SELECT * FROM Funcionario WHERE CPF = ?", [id])
-    res.render('excluir',{f})
+    res.render('excluir', { f })
 });
 
-app.get('/deletar', async function(req,res){
+app.get('/deletar', async function (req, res) {
     const id = parseInt(req.query.id)
-    if(!isNaN(id) && id >0){
+    if (!isNaN(id) && id > 0) {
+        await query("DELETE FROM loginFuncionarios WHERE CPF = ?", [id])
         await query("DELETE FROM Funcionario WHERE CPF = ?", [id])
     }
     res.redirect('/funcionarios')
 })
 
-app.get('/add-func', async function(req,res){
-    res.render('add-func',{
-        titulo: "Adicionar novo funcionário"
+app.get('/add-func', async function (req, res) {
+    res.render('add-func')
+})
+
+app.get("/excluir-animal", async function (req, res) {
+    const id = parseInt(req.query.id);
+    const f = await query("SELECT * FROM Animal WHERE IDAnimal = ?", [id])
+    res.render('excluir-animal', { f })
+});
+
+app.get('/deletar-animal', async function (req, res) {
+    const id = parseInt(req.query.id)
+    if (!isNaN(id) && id > 0) {
+        //await query("DELETE FROM loginFuncionarios WHERE CPF = ?", [id])
+        await query("DELETE FROM Animal WHERE IDAnimal = ?", [id])
+    }
+    res.redirect('/animais')
+})
+
+app.get('/add-animal', async function (erq, res) {
+    res.render('add-animal')
+})
+
+app.get('/adotantes', async function (req, res) {
+    const func = await query('SELECT * FROM Adotante ORDER BY Nome ASC')
+    res.render('adotantes', { func })
+})
+
+app.get('/add-ado', async function (req, res) {
+    res.render('add-ado', {
+        novo: "adotante"
     })
 })
 
 /* --- MÉTODOS POST ---*/
-
-app.post('/editar', async function (req, res) {
-    let { id, descricao, dia, hora, tipo, valor, categoria } = req.body
-    const dados = {
-        alerta: '',
-        descricao,
-        valor,
-        tipo,
-        categoria,
-        dia,
-        hora
-    }
-
-    console.log(`---> ${req.body.descricao}`)
-
-    let sql = 'UPDATE lancamentos set valor=?, descricao=?, tipo=?, categoria=?, dia=?, hora=? WHERE id=?';
-    let valores = [valor, descricao, tipo, categoria, dia, hora, id]
-
-    try {
-        if (!descricao) throw new Error('Título inválido!')
-        if (!categoria) throw new Error('Categoria inválida!')
-        if (!valor) throw new Error('Valor inválido!')
-        await query(sql, valores)
-        dados.alerta = 'Transação atualizada com sucesso!'
-        dados.cor = "#33cc95"
-    } catch (e) {
-        dados.alerta = e.message
-        dados.cor = 'red'
-    }
-    res.render('editar', dados)
-})
-
-app.post('/contato', async function (req, res) {
-    let mensagem = req.body.mensagem
-    let email = req.body.email
-    let nome = req.body.nome
-
-    const dadosPagina = {
-        mensagem,
-        email,
-        nome
-    }
-
-    const sql = "INSERT INTO contatos (email, nome, mensagem) VALUES (?,?,?);"
-    const valores = [email, nome, mensagem]
-
-    await query(sql, valores)
-    res.render('contato', dadosPagina)
-    res.redirect('/contato')
-})
-
-app.post('/adicionar', async function (req, res) {
-    let descricao = req.body.titulo
-    let dia = req.body.dia
-    let hora = req.body.hora
-    let valor = req.body.valor
-    let tipo = req.body.tipo ? 0 : 1
-    let categoria = req.body.categoria
-
-    if (tipo == 0) {
-        valor *= -1
-    }
-
-    const dadosPagina = {
-        descricao,
-        valor,
-        tipo,
-        categoria,
-        dia,
-        hora,
-    }
-
-    const sql = "INSERT INTO lancamentos (descricao, valor, tipo, categoria, dia, hora) VALUES (?,?,?,?,?,?);"
-    const valores = [descricao, valor, tipo, categoria, dia, hora]
-
-    await query(sql, valores)
-
-    dadosPagina.mensagem = "Produto cadastrado com sucesso"
-
-    res.render('adicionar', dadosPagina)
-    res.redirect('/')
-})
 
 app.post('/login', async function (req, res) {
     const { email, senha, keep_logged } = req.body;
@@ -307,11 +216,11 @@ app.post('/login', async function (req, res) {
     }
 })
 
-app.post('/add-func', async function(req,res){
-    const {Nome, Salario, Setor, Tipo_Colab, email, foto} = req.body
-    const dados={
-        alerta:'',
-        Nome, 
+app.post('/add-func', async function (req, res) {
+    const { Nome, Salario, Setor, Tipo_Colab, email, foto, senha } = req.body
+    const dados = {
+        alerta: '',
+        Nome,
         Salario,
         Setor,
         Tipo_Colab,
@@ -320,25 +229,86 @@ app.post('/add-func', async function(req,res){
     }
 
     try {
-        if(!Nome) throw new Error('Nome é um campo obrigatório!')
-        if(!Salario) throw new Error('Salário é um campo obrigatório!')
-        if(!Setor) throw new Error('Cargo é um campo obrigatório!')
-        if(!Tipo_Colab) throw new Error('Tipo de Colaborador é um campo obrigatório!')
-        if(!email) throw new Error('Contato é um campo obrigatório!')
+        if (!Nome) throw new Error('Nome é um campo obrigatório!')
+        if (!Salario) throw new Error('Salário é um campo obrigatório!')
+        if (!Setor) throw new Error('Cargo é um campo obrigatório!')
+        if (!Tipo_Colab) throw new Error('Tipo de Colaborador é um campo obrigatório!')
+        if (!email) throw new Error('Contato é um campo obrigatório!')
 
         const sql = 'INSERT INTO Funcionario(Nome, Salario, Setor, Tipo_Colab, email, foto) VALUES (?,?,?,?,?,?)'
         const valores = [Nome, Salario, Setor, Tipo_Colab, email, foto]
         await query(sql, valores)
 
+        const busca = 'SELECT * FROM Funcionario WHERE email LIKE ?'
+        const r = await query(busca, email)
+        const adiciona = 'INSERT INTO loginFuncionarios(nome, emailF,senha,CPF) VALUES (?,?,?,?)'
+        const val = [r[0].Nome, r[0].email, senha, r[0].CPF]
+        await query(adiciona, val)
+        res.redirect('/funcionarios')
     } catch (e) {
         dados.alerta = e.message
+        console.log(dados)
+        res.render('add-func', { dados, titulo: "Adicionar novo funcionário" })
     }
-    //res.render('add-func', dados)
-    res.redirect('/funcionarios')
+})
+
+app.post('/add-animal', async function (req, res) {
+    const { nome, tipo, idade, raca, sexo, foto, adotado } = req.body
+    const dados = {
+        nome,
+        tipo,
+        idade,
+        raca,
+        sexo,
+        foto,
+        adotado,
+        alerta: ''
+    }
+    try {
+        const sql = "INSERT INTO Animal(nome, tipo, sexo, raca, idade, foto, adotado) VALUES (?,?,?,?,?,?,?)"
+        const valores = [nome, tipo, sexo, raca, idade, foto, adotado]
+        if (!nome) throw new Error('Nome é obrigatório!')
+        if (!tipo) throw new Error('Tipo de animal é obrigatório!')
+        if (!idade) throw new Error('Idade é obrigatório!')
+        if (!raca) throw new Error('Raça é obrigatório!')
+        if (!sexo) throw new Error('Sexo do animal é obrigatório!')
+        if (!adotado) throw new Error('A situação do animal é obrigatória')
+        await query(sql, valores)
+        res.redirect('/animais')
+    } catch (e) {
+        dados.alerta = e.message
+        res.render('add-animal', { dados })
+    }
+})
+
+app.post('/add-ado', async function (req, res) {
+    const { Nome, Telefone, Endereco, Historico } = req.body
+    const dados = {
+        alerta: '', Nome,
+        Telefone,
+        Endereco,
+        Historico
+    }
+    console.log(dados)
+    try {
+        if (!Nome) throw new Error("Nome é obrigatório!")
+        if (!Telefone) throw new Error("Telefone é obrigatório!")
+        if (!Endereco) throw new Error("Endereço é obrigatório!")
+        if (!Historico) throw new Error("Histórico de Adoções é obrigatório")
+
+        const sql = "INSERT INTO Adotante(Nome,Endereco, Telefone, Historico) VALUES (?,?,?,?)"
+        valores = [Nome, Endereco, Telefone, Historico]
+        await query(sql, valores)
+        res.redirect('/adotantes')
+    } catch (e) {
+        dados.alerta = e.message
+        console.log(dados.alerta)
+        res.render('add-ado', { dados })
+    }
 })
 
 /* --- LISTEN --- */
 
 app.listen(PORT, function () {
     console.log(`Server is running at port ${PORT}`)
-})  
+})   

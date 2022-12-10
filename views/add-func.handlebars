@@ -1,10 +1,10 @@
 <div class="caixa">
     <div class="titulo">
-        <h1>{{{titulo}}}</h1>
+        <h1>Adicionar novo funcionário</h1>
     </div>
-    {{#if alerta}}
+    {{#if dados.alerta}}
     <div class="alert alert-danger" role="alert">
-        {{{alerta}}}
+        {{dados.alerta}}
     </div>
     {{/if}}
     <div class="caixote">
@@ -13,36 +13,47 @@
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Nome</span>
                     <input type="text" class="form-control" placeholder="José" aria-label="Nome"
-                        aria-describedby="basic-addon1" name="Nome" value="{{{Nome}}}">
+                        aria-describedby="basic-addon1" name="Nome" value="{{{dados.Nome}}}">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Cargo</span>
                     <input type="text" class="form-control" placeholder="Serviços Gerais" aria-label="Cargo"
-                        aria-describedby="basic-addon1" name="Setor" value="{{{Setor}}}">
+                        aria-describedby="basic-addon1" name="Setor" value="{{{dados.Setor}}}">
                 </div>
             </div>
             <div class="linha">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Tipo de Colaborador:</span>
-                    <input type="text" class="form-control" placeholder="Voluntário" aria-label="Tipo de Colaborador:"
-                        aria-describedby="basic-addon1" name="Tipo_Colab" value="{{{Tipo_Colab}}}">
+                    <label class="input-group-text" for="inputGroupSelect01">Colaborador</label>
+                    <select class="form-select" name="Tipo_Colab" id="inputGroupSelect01">
+                        <option selected disabled>Selecione</option>
+                        <option value="Efetivo">Efetivo</option>
+                        <option value="Voluntário">Voluntário</option>
+                    </select>
                 </div>
+
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Salário</span>
                     <input type="text" class="form-control" placeholder="1500,89" aria-label="Salario"
-                        aria-describedby="basic-addon1" name="Salario" value="{{{Salario}}}">
+                        aria-describedby="basic-addon1" name="Salario" value="{{{dados.Salario}}}">
                 </div>
             </div>
             <div class="linha">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Contato</span>
                     <input type="text" class="form-control" placeholder="email@email.com" aria-label="Contato"
-                        aria-describedby="basic-addon1" name="email" value="{{{email}}}">
+                        aria-describedby="basic-addon1" name="email" value="{{{dados.email}}}">
                 </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Senha</span>
+                    <input type="text" class="form-control" placeholder="engenharia2019" aria-label="Foto"
+                        aria-describedby="basic-addon1" name="senha" value="{{{dados.senha}}}">
+                </div>
+            </div>
+            <div class="linha">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Foto</span>
                     <input type="text" class="form-control" placeholder="assets/img/foto.jpeg" aria-label="Foto"
-                        aria-describedby="basic-addon1" name="foto" value="{{{foto}}}">
+                        aria-describedby="basic-addon1" name="foto" value="{{{dados.foto}}}">
                 </div>
             </div>
             <div class="linha">

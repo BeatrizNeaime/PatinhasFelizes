@@ -7,10 +7,20 @@ create table loginFuncionarios(
 	emailF varchar(100),
 	senha varchar(100) NOT NULL,
 	token varchar(60) DEFAULT NULL,
-    CPF int,
+    CPF int primary key,
     foreign key (CPF, emailF) references Funcionario(CPF, email)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+create table Funcionario(
+	CPF int auto_increment, 
+    Nome varchar(50), 
+    Salario decimal, 
+    Setor varchar(50), 
+    Tipo_Colab varchar(50), 
+    email varchar(100) not null,
+    foto varchar(1000),
+    primary key(CPF, email)
+);
 create table Doacao(
 	NDoacao int not null auto_increment, 
     Nome varchar(50), 
@@ -19,16 +29,6 @@ create table Doacao(
     Dia date, 
     primary key(NDoacao)
 );
-create table Funcionario(
-	CPF int auto_increment, 
-    Nome varchar(50), 
-    Salario decimal, 
-    Setor varchar(50), 
-    Tipo_Colab varchar(50), 
-    email varchar(100),
-    foto varchar(1000),
-    primary key(CPF, email)
-);
 create table Recebe (
 	NDoacao int not null auto_increment, 
     CPFFuncionario int, 
@@ -36,7 +36,7 @@ create table Recebe (
     foreign key(NDoacao) references Doacao(NDoacao)
 );
 create table Adotante(
-	CPF int, 
+	CPF int auto_increment, 
     Nome varchar(50), 
     Endereco varchar(50), 
     Telefone varchar(50), 
@@ -68,9 +68,6 @@ create table MediaAdocao(
     foreign key(CPFFuncionario) references Funcionario(CPF)
 );
 
-
 show tables;
-select * from loginFuncionarios;
-drop table loginFuncionarios;
-
-insert into Patinhas.loginFuncionarios(nome, emailF, senha, token, CPF) value ("Andre", "andre@email.com", 123, null);
+select * from Adotante;
+drop table Adotante;

@@ -1,47 +1,44 @@
 <div class="caixa">
     <div class="titulo">
-        <h1 class="title">Funcionários</h1>
+        <h1 class="title">Adotantes</h1>
     </div>
     <div class="botao-add">
-        <button class="btn-add"><a href="/add-func">Adicionar novo funcionário</a></button>
+        <button class="btn-add"><a href="/add-ado">Adicionar novo adotante</a></button>
     </div>
-    {{#if alerta}}
-    <div class="alert alert-success" role="alert">
-        {{alerta}}
-    </div>
-    {{/if}}
     <div class="content">
+
         <div class="galeria">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 middle">
                 {{#if func}}
                 {{#each func}}
-                <div class="col aaaa">
-                    <div class="card shadow-sm ola">
-                        {{#if foto}}
-                        <img width="100%" height="100%" fill="#55595c" src="{{foto}}"></img>
-                        {{else}}
-                        <img width="100%" height="100%" fill="#55595c" src="assets/img/logog.svg"></img>
-                        {{/if}}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        </svg>
                         <div class="card-body">
                             <p class="card-text">
                             <ul class="info">
-                                <li class="nome">{{{Nome}}}</li>
-                                <li>Colaborador: {{{Tipo_Colab}}}</li>
-                                <li>Cargo: {{{Setor}}}</li>
-                                <li>Matrícula: {{{CPF}}}</li>
-                                {{#if Salario}}
-                                <li>Salário: R${{{Salario}}}</li>
+                                <li class="nome">{{Nome}}</li>
+                                <li>Telefone: {{Telefone}}</li>
+                                <li>Endereço: {{Endereco}}</li>
+                                {{#if Historico}}
+                                <div class="adopted">
+                                    <li class="adotado">Já adotou</li>
+                                </div>
                                 {{else}}
-                                <li>Salário: não se aplica</li>
+                                <div class="waiting">
+                                    <li class="adocao">
+                                        Não adotou
+                                    </li>
+                                </div>
                                 {{/if}}
-                                <li>Contato: {{{email}}}</li>
                             </ul>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Alterar</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary btn-excluir"><a
-                                            href="/excluir?id={{CPF}}" class="excluir">Excluir</a></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"><a href=""
+                                            class="add">Adoção</a></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary excluir"><a
+                                            href="/excluir-animal?id={{IDAnimal}}">Excluir</a></button>
                                 </div>
                             </div>
                         </div>
@@ -55,6 +52,14 @@
 </div>
 
 <style>
+    button a {
+        text-decoration: none;
+    }
+
+    .col {
+        width: 300px;
+    }
+
     .adopted {
         background-color: #a3bf3b;
         color: #fefefe;
@@ -64,13 +69,19 @@
     .waiting {
         border-radius: 6px;
         text-align: center;
-        width: 60%;
+        width: 100%;
+    }
+
+    .adopted li::before,
+    .waiting li::before {
+        content: none !important;
     }
 
     .botao-add {
         align-items: center;
         display: flex;
         justify-content: flex-end;
+        margin: 1.5rem 0;
         padding: 0 2rem;
         width: 80%;
     }
@@ -91,18 +102,6 @@
         background-color: #a3bf3b;
     }
 
-    .btn-excluir {
-        background-color: #ed1b2e;
-        border: none;
-    }
-
-    .btn-excluir:hover {
-        background-color: #ad0311;
-    }
-
-    .col {
-        width: 340px;
-    }
 
     .caixa {
         align-items: center;
@@ -117,28 +116,36 @@
         justify-content: space-evenly;
     }
 
-    .galeria {
-        align-items: center;
-        display: flex;
-        justify-content: space-evenly;
-        margin: 2rem;
-        width: 80%;
-    }
-
-    .card img {
-        height: auto;
-        max-height: 194.85px;
-        max-width: 371.33px;
-        width: auto;
-    }
-
     .excluir {
+        background-color: #ed1b2e;
+        border: none;
+    }
+
+    .excluir:hover {
+        background-color: #ad0311;
+    }
+
+    .excluir a {
         color: #fefefe;
         text-decoration: none;
     }
 
-    .excluir:hover {
-        color: #fefefe;
+    footer {
+        margin-top: 2rem;
+    }
+
+    .galeria {
+        align-items: center;
+        display: flex;
+        justify-content: space-evenly;
+        width: 80%;
+    }
+
+    img {
+        height: auto;
+        max-height: 194.85px;
+        max-width: 371.33px;
+        width: auto;
     }
 
     .info li {
@@ -159,8 +166,8 @@
         font-size: 20px;
     }
 
-    .info .nome::before {
-        content: "";
+    .nome::before {
+        content: none !important;
     }
 
     .titulo {

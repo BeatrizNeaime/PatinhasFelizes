@@ -1,0 +1,174 @@
+<div class="caixa">
+    <div class="titulo">
+        <h1>Editar Doação</h1>
+    </div>
+    <div class="alert alert-primary" role="alert">
+        Dica: caso seja uma doação anônima, deixe o campo relativo ao nome em branco
+    </div>
+    {{#if mensagem}}
+    <div class="alert alert-danger" role="alert">
+        {{mensagem}}
+    </div>
+    {{/if}}
+    <div class="caixote">
+        <form action="/edit-doacao" method="post" class="formulario">
+            <div class="linha">
+                <div class="input-group mb-3 ">
+                    <span class="input-group-text" id="basic-addon1">Nome</span>
+                    <input type="text" class="form-control linhap" placeholder="André" aria-label="Nome"
+                        aria-describedby="basic-addon1" name="Nome" value="{{ objConta.Nome }}">
+                </div>
+                <div class="linhap">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Data</span>
+                        <input type="date" class="form-control" placeholder="xxxxxxxxxxx" aria-label="Nome"
+                            aria-describedby="basic-addon1" name="Dia" value="{{ objConta.Dia }}">
+                    </div>
+                </div>
+            </div>
+            <div class="linha">
+                <div class="input-group mb-3 meio">
+                    <label class="input-group-text" for="inputGroupSelect01">Tipo</label>
+                    <select class="form-select" id="inputGroupSelect01" name="Tipo">
+                        {{#if objConta.Tipo}}
+                        <option value="0">Dinheiro</option>
+                        <option selected value="1">Ração</option>
+
+                        {{else}}
+                        <option selected value="0">Dinheiro</option>
+                        <option value="1">Ração</option>
+
+                        {{/if}}
+
+
+                    </select>
+                </div>
+                <div class="input-group mb-3 meio">
+                    <span class="input-group-text" id="basic-addon1">Valor(R$)/Quantidade(Kg):</span>
+                    <input type="text" class="form-control" placeholder="2" aria-label="Tipo de Colaborador:"
+                        aria-describedby="basic-addon1" name="Valor" value="{{ objConta.Valor }}">
+                </div>
+                <div class="mb-3 row meio">
+                    <div class="recebeu">
+                        <label for="staticEmail" class="col-form-label ">Recebido por: {{ objConta.CPF }}</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="linha">
+                <div class="linha-f">
+                    <button class="btn-cancel"><a href="/financas">Voltar</a></button>
+                    <button class="btn-go" type="submit">Editar</button>
+                </div>
+            </div>
+            <input type="hidden" name="id" value="{{ objConta.NDoacao }}">
+        </form>
+    </div>
+</div>
+
+<style>
+    .alert {
+        transition: 0.5 ease;
+    }
+
+    .btn-cancel,
+    .btn-go {
+        border: none;
+        border-radius: 6px;
+        padding: 5px;
+    }
+
+    .btn-cancel {
+        background-color: #a3bf3b;
+    }
+
+    .btn-cancel a {
+        color: #fefefe;
+        text-decoration: none;
+    }
+
+    .btn-go {
+        background-color: #bf814b;
+        color: #fefefe;
+    }
+
+    .caixa {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .caixote {
+        align-items: center;
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+
+    .formulario {
+        background-color: rgba(198, 249, 130, 0.7);
+        border-radius: 6px;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        width: 80%;
+    }
+
+    .linha {
+        margin: 1rem 0;
+    }
+
+    .linha,
+    .linha-f {
+        align-items: center;
+        display: flex;
+        gap: 1%;
+        justify-content: space-evenly;
+    }
+
+    .linha-f {
+        width: 50%;
+    }
+
+    .linhap {
+        width: 49.5%;
+    }
+
+    .meio {
+        width: 33%;
+    }
+
+    .recebido {
+        background-color: rebeccapurple;
+    }
+
+    .recebeu {
+        width: 100%;
+    }
+
+    .titulo {
+        height: 30%;
+        margin: 1.5rem 0;
+    }
+
+    @media screen and (max-width: 1023px) {
+
+        .formulario,
+        .linha {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .linha {
+            margin: 0;
+        }
+
+        .linhap,
+        .linha-f {
+            width: 100%;
+        }
+
+    }
+</style>

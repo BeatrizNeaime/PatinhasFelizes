@@ -10,7 +10,7 @@
                         <h3>Adotados</h3>
                     </div>
                     <div class="trem">
-                        {{adotados}}
+                        <h2>{{adotados}}</h2>
                     </div>
                 </div>
             </div>
@@ -20,14 +20,14 @@
                         <h3>Aguardando</h3>
                     </div>
                     <div class="trem">
-                        {{agua}}
+                       <h2> {{agua}}</h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="botao-add">
-        <button class="btn-add"><a href="/add-adocao">Adicionar nova adoção</a></button>
+        <button class="btn-add"><a href="/add-adocao/:0">Adicionar nova adoção</a></button> 
     </div>
     <div class="content">
         {{#if alerta}}
@@ -40,40 +40,23 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Doador</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Valor</th>
+                        <th scope="col">Adotante</th>
+                        <th scope="col">Animal</th>
+                        <th scope="col">Funcionario</th>
                         <th scope="col">Data</th>
-                        <th scope="col">Matrícula do mediador</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each d}}
                     <tr>
-                        {{#if Nome}}
-                        <td>{{{Nome}}}</td>
-                        {{else}}
-                        <td>Anônimo</td>
-                        {{/if}}
-                        {{#if Tipo}}
+                        <td>{{AdoNome}} </td>
+                        <td>{{nome}}</td>
+                        <td>{{FuncNome}}</td>
+                        <td>{{{dia}}}</td>
+                        
                         <td>
-                            <div class="racao">
-                                <p>Ração</p>
-                            </div>
-                        </td>
-                        {{else}}
-                        <td>
-                            <div class="dinheiro">
-                                <p>Dinheiro</p>
-                            </div>
-                        </td>
-                        {{/if}}
-                        <td>{{{Valor}}}</td>
-                        <td>{{{Dia}}}</td>
-                        <td>{{{CPF}}}</td>
-                        <td>
-                            <a href="" class="editar"><i class='bx bxs-edit'></i></a>
-                            <a href="/excluir-doacao?id={{NDoacao}}" class="excluir"><i class='bx bx-x-circle'></i>
+                            <a href="/edit-adocao/{{IDAdocao}}" class="editar"><i class='bx bxs-edit'></i></a>
+                            <a href="/excluir-adocao?id={{IDAdocao}}" class="excluir"><i class='bx bx-x-circle'></i>
                                 </a>
                         </td>
                     </tr>
@@ -185,6 +168,10 @@
 
     .title {
         margin: 2rem 0;
+    }
+
+    .trem{
+        padding: 2rem;
     }
 
     @media screen and (max-width: 1023px) {

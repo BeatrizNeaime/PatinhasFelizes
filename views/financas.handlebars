@@ -10,7 +10,7 @@
                         <h3>Dinheiro <i class='bx bx-money-withdraw'></i></h3>
                     </div>
                     <div class="trem">
-                        {{dinheiro}}
+                        <h3>R${{dDinheiro}}</h3>
                     </div>
                 </div>
             </div>
@@ -20,7 +20,7 @@
                         <h3>Ração <i class='bx bxs-bowl-rice'></i></h3>
                     </div>
                     <div class="trem">
-                        {{racao}}
+                        <h3>{{dRacao}}kg</h3>
                     </div>
                 </div>
             </div>
@@ -72,9 +72,9 @@
                         <td>{{{Dia}}}</td>
                         <td>{{{CPF}}}</td>
                         <td>
-                            <a href="" class="editar"><i class='bx bxs-edit'></i></a>
+                            <a href="/edit-doacao/{{NDoacao}}" class="editar"><i class='bx bxs-edit'></i></a>
                             <a href="/excluir-doacao?id={{NDoacao}}" class="excluir"><i class='bx bx-x-circle'></i>
-                                </a>
+                            </a>
                         </td>
                     </tr>
                     {{/each}}
@@ -112,7 +112,7 @@
     }
 
     .btn-add a {
-        color: #fefefe;
+        color: #000;
         text-decoration: none;
     }
 

@@ -50,12 +50,23 @@
                             </ul>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
+                                {{#if adotado}}
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary"><a href=""
-                                            class="add">Adoção</a></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"><a
+                                            href="/edit-animal?id={{IDAnimal}}">Editar</a></button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary excluir"><a
                                             href="/excluir-animal?id={{IDAnimal}}">Excluir</a></button>
                                 </div>
+                                {{else}}
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"><a
+                                            href="/add-adocao/{{IDAnimal}}" class="add">Adoção</a></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"><a
+                                            href="/edit-animal?id={{IDAnimal}}">Editar</a></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary excluir"><a
+                                            href="/excluir-animal?id={{IDAnimal}}">Excluir</a></button>
+                                </div>
+                                {{/if}}
                             </div>
                         </div>
                     </div>

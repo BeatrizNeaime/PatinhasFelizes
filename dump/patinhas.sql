@@ -47,7 +47,7 @@ create table Adotante(
 );
 create table Adocao(
 	IDAdocao int not null auto_increment, 
-    dia date, 
+    dia varchar(10), 
     CPFAdotante int, 
     IDAnimal int,
     CPFFunc int,
@@ -76,6 +76,20 @@ create table MediaAdocao(
 
 show tables;
 select * from loginFuncionarios;
+select * from Funcionario;
+select * from Animal;
+select * from Adotante;
+select * from Doacao;
+select * from Adocao;
+
+SELECT *, Funcionario.Nome as FuncNome, Adotante.Nome as AdoNome  FROM Adocao, Animal, Adotante, Funcionario where Adocao.IDAnimal = Animal.IDAnimal and Adocao.CPFAdotante = Adotante.CPF and  Adocao.CPFFunc = Funcionario.CPF;
+
+select * from Adotante, Adocao where Adotante.CPF = Adocao.CPFAdotante;
+
+
+
+
 drop table Adocao;
+drop table MediaAdocao;
 
 select Nome from Funcionario where CPF = 19;

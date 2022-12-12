@@ -1,0 +1,198 @@
+<div class="caixa">
+    <div class="titulo">
+        <h1>Editar animal</h1>
+    </div>
+    {{#if mensagem}}
+    <div class="alert alert-danger" role="alert">
+        {{mensagem}}
+    </div>
+    {{/if}}
+    <div class="caixote">
+        <form method="POST" action="/edit-animal" class="formulario">
+            <div class="linha">
+                <div class="input-group mb-3" style="width: 49.5%;">
+                    <span class="input-group-text" id="basic-addon1">Nome</span>
+                    <input type="text" class="form-control" placeholder="Totó" aria-label="Nome"
+                        aria-describedby="basic-addon1" name="nome" value="{{ objConta.nome }}">
+                </div>
+                <div class="linhap">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Tipo</label>
+                        <select class="form-select" name="tipo" id="inputGroupSelect01">
+
+                            {{#if objConta.tipo}}
+                            <option selected value="Cachorro">Cachorro</option>
+                            <option value="Gato">Gato</option>
+                            {{else}}
+                            <option value="Cachorro">Cachorro</option>
+                            <option selected value="Gato">Gato</option>
+                            {{/if}}
+
+
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="linha">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Idade:</span>
+                    <input type="text" class="form-control" placeholder="2 anos" aria-label="Tipo de Colaborador:"
+                        aria-describedby="basic-addon1" name="idade" value="{{ objConta.idade }}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Raça</span>
+                    <input type="text" class="form-control" placeholder="Vira-Lata" aria-label="Salario"
+                        aria-describedby="basic-addon1" name="raca" value="{{ objConta.raca }}">
+                </div>
+            </div>
+            <div class="linha">
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Sexo</label>
+                    <select class="form-select" id="inputGroupSelect01" name="sexo">
+                        {{#if objConta.sexo}}
+                        <option value="0">Macho</option>
+                        <option selected value="1">Fêmea</option>
+
+                        {{else}}
+                        <option selected value="0">Macho</option>
+                        <option value="1">Fêmea</option>
+                        {{/if}}
+
+
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Adotado</label>
+                    <select class="form-select" name="adotado" id="inputGroupSelect01">
+                        {{#if objConta.adotado}}
+                        <option value="0">Não</option>
+                        <option selected value="1">Sim</option>
+                        {{else}}
+                        <option selected value="0">Não</option>
+                        <option value="1">Sim</option>
+
+                        {{/if}}
+                    </select>
+                </div>
+
+            </div>
+            <div class="linha">
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Foto</span>
+                    <input type="text" class="form-control" placeholder="assets/img/foto.jpeg" aria-label="Foto"
+                        aria-describedby="basic-addon1" name="foto" value="{{ objConta.foto }}">
+                </div>
+            </div>
+
+            <div class="linha">
+                <div class="linha-f">
+                    <button class="btn-cancel"><a href="/animais">Voltar</a></button>
+                    <button class="btn-go" type="submit">Salvar</button>
+                </div>
+            </div>
+
+
+            <input type="hidden" name="id" value="{{ objConta.IDAnimal }}">
+
+        </form>
+    </div>
+</div>
+
+<style>
+    .alert {
+        transition: 0.5 ease;
+    }
+
+    .btn-cancel,
+    .btn-go {
+        border: none;
+        border-radius: 6px;
+        padding: 5px;
+    }
+
+    .btn-cancel {
+        background-color: #a3bf3b;
+    }
+
+    .btn-cancel a {
+        color: #fefefe;
+        text-decoration: none;
+    }
+
+    .btn-go {
+        background-color: #bf814b;
+        color: #fefefe;
+    }
+
+    .caixa {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .caixote {
+        align-items: center;
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+
+    .formulario {
+        background-color: rgba(198, 249, 130, 0.7);
+        border-radius: 6px;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        width: 80%;
+    }
+
+    .linha {
+        margin: 1rem 0;
+    }
+
+    .linha,
+    .linha-f {
+        align-items: center;
+        display: flex;
+        gap: 1%;
+        justify-content: space-evenly;
+    }
+
+    .linha-f {
+        width: 50%;
+    }
+
+    .linhap {
+        width: 49.5%;
+    }
+
+    .titulo {
+        height: 30%;
+        margin: 1.5rem 0;
+    }
+
+    @media screen and (max-width: 1023px) {
+
+        .formulario,
+        .linha {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .linha {
+            margin: 0;
+        }
+
+        .linhap,
+        .linha-f {
+            width: 100%;
+        }
+
+    }
+</style>

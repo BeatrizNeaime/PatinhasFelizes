@@ -1,0 +1,158 @@
+<div class="caixa">
+    <div class="titulo">
+        <h1>Editar Adoção</h1>
+    </div>
+    {{#if mensagem}}
+    <div class="alert alert-danger" role="alert">
+        {{mensagem}}
+    </div>
+    {{/if}}
+    <div class="caixote">
+        <form action="/edit-adocao" method="post" class="formulario">
+
+            <div class="linha">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Animal</label>
+                    <select class="form-select" name="IDAnimal" id="inputGroupSelect01" required>
+                        {{#each sel}}
+                        <option selected value={{ IDAnimal }}>{{ nome }}</option>
+                        {{/each}}
+
+                        {{#each aguar}}
+                        <option value={{ IDAnimal }}>{{ nome }}</option>
+                        {{/each}}
+
+                    </select>
+                </div>
+
+                <div class="linhap">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Data</span>
+                        <input required type="date" class="form-control" placeholder="xxxxxxxxxxx" aria-label="Nome"
+                            aria-describedby="basic-addon1" name="dia" value="{{ objConta.Dia }}">
+                    </div>
+                </div>
+            </div>
+            <div class="linha">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Adotante</span>
+                    <select required class="form-select" name="CPF" id="inputGroupSelect01">
+
+                        <option selected value="{{ objConta.CPFAdotante }}">{{Nome}}</option>
+
+                        {{#each adotante}}
+
+                        <option value="{{ CPF }}">{{ Nome }}</option>
+
+                        {{/each}}
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="linha">
+                <div class="linha-f">
+                    <button class="btn-cancel"><a href="/adocao">Voltar</a></button>
+                    <button class="btn-go" type="submit">Editar</button>
+                </div>
+            </div>
+            <input type="hidden" name="id" value="{{ objConta.IDAdocao }}">
+        </form>
+    </div>
+</div>
+
+<style>
+    .alert {
+        transition: 0.5 ease;
+    }
+
+    .btn-cancel,
+    .btn-go {
+        border: none;
+        border-radius: 6px;
+        padding: 5px;
+    }
+
+    .btn-cancel {
+        background-color: #a3bf3b;
+    }
+
+    .btn-cancel a {
+        color: #fefefe;
+        text-decoration: none;
+    }
+
+    .btn-go {
+        background-color: #bf814b;
+        color: #fefefe;
+    }
+
+    .caixa {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .caixote {
+        align-items: center;
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+
+    .formulario {
+        background-color: rgba(198, 249, 130, 0.7);
+        border-radius: 6px;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        width: 80%;
+    }
+
+    .linha {
+        margin: 1rem 0;
+    }
+
+    .linha,
+    .linha-f {
+        align-items: center;
+        display: flex;
+        gap: 1%;
+        justify-content: space-evenly;
+    }
+
+    .linha-f {
+        width: 50%;
+    }
+
+    .linhap {
+        width: 49.5%;
+    }
+
+    .titulo {
+        height: 30%;
+        margin: 1.5rem 0;
+    }
+
+    @media screen and (max-width: 1023px) {
+
+        .formulario,
+        .linha {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .linha {
+            margin: 0;
+        }
+
+        .linhap,
+        .linha-f {
+            width: 100%;
+        }
+
+    }
+</style>

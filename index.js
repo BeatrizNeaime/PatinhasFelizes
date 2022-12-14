@@ -193,16 +193,17 @@ app.get('/excluir-ado', async function (req, res) {
 app.get('/deletar-adotante', async function (req, res) {
     const id = parseInt(req.query.id)
     if (!isNaN(id) && id > 0) {
+        await query('DELETE FROM Adocao WHERE CPFAdotante = ?', [id])
         await query("DELETE FROM Adotante WHERE CPF = ?", [id])
     }
     res.redirect('/adotantes')
 })
 
 app.get('/financas', async function (req, res) {
-    const d = await query("SELECT * FROM Doacao")
+    const d = await query("SELECT *, Funcionario.Nome as FuncNome, Doacao.Nome as AdoNome FROM Doacao, Funcionario where Funcionario.CPF = Doacao.CPF")   
     const dinheiro = await query('SELECT * FROM Doacao WHERE Tipo= 0')
     const racao = await query('SELECT * FROM Doacao WHERE Tipo=1')
-    var dDinheiro=0, dRacao=0
+    var dDinheiro = 0, dRacao = 0
     for (let i = 0; i < dinheiro.length; i++) {
         dDinheiro += parseInt(dinheiro[i].Valor)
     }
@@ -244,7 +245,7 @@ app.get('/deletar-doacao', async function (req, res) {
 })
 
 app.get('/adocao', async function (req, res) {
-    const d = await query("SELECT *, Funcionario.Nome as FuncNome, Adotante.Nome as AdoNome  FROM Adocao, Animal, Adotante, Funcionario where Adocao.IDAnimal = Animal.IDAnimal and Adocao.CPFAdotante = Adotante.CPF and  Adocao.CPFFunc = Funcionario.CPF")
+    const d = await query("SELECT *, Funcionario.Nome as FuncNome, Adotante.Nome as AdoNome FROM Adocao, Animal, Adotante, Funcionario where Adocao.IDAnimal = Animal.IDAnimal and Adocao.CPFAdotante = Adotante.CPF and  Adocao.CPFFunc = Funcionario.CPF")
     const aguar = await query('SELECT * FROM Animal WHERE adotado=0')
     const adotados = await query('SELECT * FROM Animal WHERE adotado=1')
 
@@ -342,6 +343,7 @@ app.get('/edit-func/:CPF', async function (request, response) {
 
 app.get('/add-adocao/:id', async function (req, res) {
     const id = parseInt(req.params.id)
+    console.log(id)
     const mail = [req.session.usuario.emailF]
     const nome = await query("SELECT * FROM Funcionario WHERE email LIKE ?", mail)
     const adot = await query('SELECT * FROM Adotante')
@@ -363,6 +365,7 @@ app.get('/add-adocao/:id', async function (req, res) {
             voltar: 1
         })
     }
+    await query('UPDATE Patinhas.Adotante SET Historico=1 WHERE Adotante.CPF = ? ', [adot[0].CPF])
 })
 
 app.get('/add-adocao/:cp', async function (req, res) {
@@ -601,6 +604,7 @@ app.post('/edit-animal', async (request, response) => {
         }
         // atualiza os dados na base de dados
         await query(sql, valores);
+        response.redirect('/animais')
     }
     catch (e) {
         dadosPagina.mensagem = e.message;
@@ -634,7 +638,7 @@ app.post('/edit-ado', async (request, response) => {
         let valores = [Nome, Telefone, Endereco, Historico, id];
         // atualiza os dados na base de dados
         await query(sql, valores);
-        res.redirect('/adotante')
+        response.redirect('/adotantes')
     }
     catch (e) {
         dadosPagina.mensagem = e.message;
@@ -666,7 +670,7 @@ app.post('/edit-doacao', async (request, response) => {
         let valores = [Nome, Valor, Tipo, Dia, id];
         // atualiza os dados na base de dados
         await query(sql, valores);
-        res.redirect('/financas')
+        response.redirect('/financas')
     }
     catch (e) {
         dadosPagina.mensagem = e.message;
@@ -738,7 +742,6 @@ app.post('/add-adocao', async function (req, res) {
         await query(doacao, valores)
         await query(sql, val)
         await query(sql1, val1)
-
         res.redirect('adocao')
     } catch (e) {
         dados.alerta = e.message

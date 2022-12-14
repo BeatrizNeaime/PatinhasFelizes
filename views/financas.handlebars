@@ -44,14 +44,14 @@
                         <th scope="col">Tipo</th>
                         <th scope="col">Valor</th>
                         <th scope="col">Data</th>
-                        <th scope="col">Matrícula do mediador</th>
+                        <th scope="col">Mediador</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each d}}
                     <tr>
-                        {{#if Nome}}
-                        <td>{{{Nome}}}</td>
+                        {{#if AdoNome}}
+                        <td>{{{AdoNome}}}</td>
                         {{else}}
                         <td>Anônimo</td>
                         {{/if}}
@@ -70,7 +70,7 @@
                         {{/if}}
                         <td>{{{Valor}}}</td>
                         <td>{{{Dia}}}</td>
-                        <td>{{{CPF}}}</td>
+                        <td>{{{FuncNome}}}</td>
                         <td>
                             <a href="/edit-doacao/{{NDoacao}}" class="editar"><i class='bx bxs-edit'></i></a>
                             <a href="/excluir-doacao?id={{NDoacao}}" class="excluir"><i class='bx bx-x-circle'></i>
